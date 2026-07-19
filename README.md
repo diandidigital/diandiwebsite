@@ -26,6 +26,33 @@ Les mêmes variables doivent être ajoutées dans les paramètres du projet Verc
 - `app/sitemap.ts` et `app/robots.ts` génèrent automatiquement `/sitemap.xml` et `/robots.txt` (équivalent Yoast/RankMath, sans plugin).
 - Vercel Analytics est activé nativement (`@vercel/analytics`) — visible dans l'onglet "Analytics" du projet sur Vercel, aucune configuration requise.
 
+## Blog (`/blog`) et administration (`/admin`)
+
+Remplace la publication d'articles WordPress : `/admin` est une interface de publication protégée, sans besoin de toucher au code ou à git pour publier un article.
+
+**Configuration à faire une seule fois dans la Console Firebase :**
+
+1. **Récupérer les clés client** : Project Settings → General → "Your apps" → ajoute une "Web app" si aucune n'existe. Copie `apiKey`, `authDomain`, `projectId` dans `NEXT_PUBLIC_FIREBASE_*` (voir `.env.local.example`), en local et dans les variables d'environnement Vercel.
+2. **Activer l'authentification** : Authentication → Sign-in method → active "Email/Password". Puis Authentication → Users → "Add user" pour créer ton compte admin (email + mot de passe).
+3. **Règles de sécurité Firestore** : Firestore Database → Rules, colle :
+   ```
+   rules_version = '2';
+   service cloud.firestore {
+     match /databases/{database}/documents {
+       match /articles/{articleId} {
+         allow read: if resource.data.published == true;
+         allow read, write: if request.auth != null;
+       }
+       match /contacts/{contactId} {
+         allow read, write: if false;
+       }
+     }
+   }
+   ```
+   (Les soumissions du formulaire de contact passent par le SDK Admin côté serveur, qui contourne ces règles — elles restent donc inaccessibles publiquement.)
+
+**Utilisation** : va sur `/admin/login`, connecte-toi avec le compte créé à l'étape 2, puis crée/édite/supprime des articles depuis `/admin`. Les articles avec la case "Publié" cochée apparaissent sur `/blog`.
+
 ## Images Cloudinary
 
 Les identifiants publics (`publicId`) des images du portfolio sont centralisés dans `lib/content.ts`. Une fois les images uploadées sur Cloudinary, mettre à jour ces `publicId` pour qu'elles s'affichent sur le site.

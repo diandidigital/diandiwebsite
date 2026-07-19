@@ -5,10 +5,11 @@ export const site = {
 };
 
 export const nav = [
-  { label: "Services", href: "#services" },
-  { label: "À propos", href: "#about" },
-  { label: "Réalisations", href: "#portfolio" },
-  { label: "Contact", href: "#contact" },
+  { label: "Services", href: "/#services" },
+  { label: "À propos", href: "/#about" },
+  { label: "Réalisations", href: "/#portfolio" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export const services = [
