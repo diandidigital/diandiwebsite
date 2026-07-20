@@ -61,7 +61,12 @@ Remplace la publication d'articles WordPress : `/admin` est une interface de pub
 
 ## Images Cloudinary
 
-Les identifiants publics (`publicId`) des images du portfolio sont centralisés dans `lib/content.ts`. Une fois les images uploadées sur Cloudinary, mettre à jour ces `publicId` pour qu'elles s'affichent sur le site.
+Deux façons d'afficher une image via Cloudinary (`lib/cloudinary.ts`) :
+
+- `cloudinaryUrl(publicId)` — pour une image déjà uploadée manuellement sur Cloudinary. Les `publicId` du portfolio sont centralisés dans `lib/content.ts`.
+- `cloudinaryFetchUrl(remoteUrl)` — pour réutiliser une image encore hébergée ailleurs (ex: ancienne médiathèque WordPress sur LWS, `https://diandidigital.tech/wp-content/uploads/...`) sans avoir à la ré-uploader : Cloudinary va la chercher, l'optimise et la met en cache automatiquement à la demande.
+  - ⚠️ Nécessite que le "fetch" distant soit autorisé sur le compte Cloudinary : Dashboard → Settings → Security → vérifier que "Restricted media types" / "Allow fetching remote media" n'est pas bloqué.
+  - ⚠️ Ne fonctionne que tant que l'URL d'origine reste accessible (donc tant que l'hébergement LWS existant sert encore ces fichiers).
 
 ## Structure
 
