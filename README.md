@@ -53,6 +53,12 @@ Remplace la publication d'articles WordPress : `/admin` est une interface de pub
 
 **Utilisation** : va sur `/admin/login`, connecte-toi avec le compte créé à l'étape 2, puis crée/édite/supprime des articles depuis `/admin`. Les articles avec la case "Publié" cochée apparaissent sur `/blog`.
 
+## Page "bientôt disponible" et mode maintenance
+
+- `/coming-soon` est une page autonome avec compte à rebours (`components/Countdown.tsx`), consultable à tout moment à cette URL — utile pour annoncer un lancement en partageant ce lien.
+- La date du countdown vient de `NEXT_PUBLIC_LAUNCH_DATE` (format `2026-09-01T00:00:00`).
+- Pour mettre **tout le site** en attente (mode maintenance), passe `MAINTENANCE_MODE=true` dans les variables d'environnement (local ou Vercel) : `middleware.ts` redirige alors toutes les pages vers `/coming-soon`, sauf `/admin` (pour continuer à publier), `/api`, et les fichiers SEO (`robots.txt`, `sitemap.xml`, `ads.txt`). Remets `MAINTENANCE_MODE=false` (ou supprime la variable) pour rouvrir le site.
+
 ## Images Cloudinary
 
 Les identifiants publics (`publicId`) des images du portfolio sont centralisés dans `lib/content.ts`. Une fois les images uploadées sur Cloudinary, mettre à jour ces `publicId` pour qu'elles s'affichent sur le site.
