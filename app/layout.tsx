@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
+
+const ADSENSE_CLIENT_ID = "ca-pub-9522448395057090";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -16,6 +19,9 @@ export const metadata: Metadata = {
     "Diandi Digital développe des applications web et Android sur-mesure, ainsi que des sites et des identités de marque modernes qui font grandir votre activité.",
   icons: {
     icon: "/LOGO-DIANDIDIGITAL 100.png",
+  },
+  other: {
+    "google-adsense-account": ADSENSE_CLIENT_ID,
   },
   openGraph: {
     title: "Diandi Digital — Développement web & applications Android",
@@ -38,6 +44,12 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         {children}
         <Analytics />
+        <Script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
