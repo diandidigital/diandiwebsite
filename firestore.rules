@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Blog : lecture publique, écriture réservée à un compte admin connecté
+    match /articles/{articleId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Soumissions du formulaire de contact : écrites uniquement côté serveur
+    // (Firebase Admin SDK, qui ignore ces règles). Aucun accès depuis le client.
+    match /contacts/{contactId} {
+      allow read, write: if false;
+    }
+
+    // Tout le reste : fermé par défaut
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -11,16 +11,16 @@ const sora = Sora({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://diandidigital.tech"),
-  title: "Diandi Digital — Studio digital",
+  title: "Diandi Digital — Développement web & applications Android",
   description:
-    "Diandi Digital conçoit des sites, des applications et des identités de marque modernes qui font grandir votre activité.",
+    "Diandi Digital développe des applications web et Android sur-mesure, ainsi que des sites et des identités de marque modernes qui font grandir votre activité.",
   icons: {
     icon: "/LOGO-DIANDIDIGITAL 100.png",
   },
   openGraph: {
-    title: "Diandi Digital — Studio digital",
+    title: "Diandi Digital — Développement web & applications Android",
     description:
-      "Diandi Digital conçoit des sites, des applications et des identités de marque modernes qui font grandir votre activité.",
+      "Diandi Digital développe des applications web et Android sur-mesure, ainsi que des sites et des identités de marque modernes qui font grandir votre activité.",
     url: "https://diandidigital.tech",
     siteName: "Diandi Digital",
     locale: "fr_FR",

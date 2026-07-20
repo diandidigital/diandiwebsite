@@ -1,6 +1,6 @@
 export const site = {
   name: "Diandi Digital",
-  tagline: "Studio digital",
+  tagline: "Agence de développement web & Android",
   domain: "diandidigital.tech",
 };
 
@@ -14,10 +14,16 @@ export const nav = [
 
 export const services = [
   {
-    title: "Développement web",
+    title: "Développement web & applications",
     description:
-      "Sites vitrines, applications et plateformes sur-mesure, rapides et pensés pour convertir.",
+      "Sites web, web apps et plateformes sur-mesure, rapides, sécurisées et pensées pour convertir.",
     icon: "code",
+  },
+  {
+    title: "Applications Android",
+    description:
+      "Conception et développement d'applications mobiles Android natives, robustes et prêtes pour le Play Store.",
+    icon: "mobile",
   },
   {
     title: "Design UI/UX",

@@ -23,7 +23,7 @@ export default function Hero() {
           className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm font-medium text-ink/70 shadow-card mb-8"
         >
           <span className="h-2 w-2 rounded-full bg-brand-gradient" />
-          Studio digital · Web · Design · Marketing
+          Agence de développement · Web Apps · Applications Android
         </motion.div>
 
         <motion.h1
@@ -32,8 +32,8 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="text-4xl sm:text-6xl font-bold tracking-tight leading-tight max-w-4xl mx-auto"
         >
-          Des sites et des marques qui{" "}
-          <span className="text-gradient">font grandir</span> votre activité
+          Vos <span className="text-gradient">applications web et Android</span>{" "}
+          conçues pour faire grandir votre activité
         </motion.h1>
 
         <motion.p
@@ -42,9 +42,10 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.2 }}
           className="mt-6 text-lg text-ink/60 max-w-2xl mx-auto"
         >
-          Diandi Digital accompagne les entreprises et les entrepreneurs dans
-          la création de sites web, d'applications et d'identités visuelles
-          modernes, rapides et pensés pour convertir.
+          Diandi Digital est une agence spécialisée dans le développement
+          d'applications web et Android sur-mesure. Nous concevons aussi vos
+          sites, votre identité visuelle et votre marketing digital, pour une
+          présence en ligne cohérente de bout en bout.
         </motion.p>
 
         <motion.div

@@ -17,14 +17,15 @@ export default function About() {
             À propos
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-6">
-            Un studio digital à taille humaine, exigeant sur le résultat
+            Une agence de développement à taille humaine, exigeante sur le résultat
           </h2>
           <p className="text-ink/60 leading-relaxed mb-4">
-            Diandi Digital accompagne les entreprises et les entrepreneurs
-            dans la conception de sites, d'applications et d'identités
-            visuelles modernes. Notre approche : comprendre vos objectifs,
-            concevoir une expérience claire, et livrer un produit rapide,
-            fiable et bien pensé.
+            Diandi Digital est avant tout une agence de développement
+            d'applications web et Android. Nous accompagnons aussi les
+            entreprises et entrepreneurs dans la conception de sites et
+            d'identités visuelles modernes. Notre approche : comprendre vos
+            objectifs, concevoir une expérience claire, et livrer un produit
+            rapide, fiable et bien pensé.
           </p>
           <p className="text-ink/60 leading-relaxed">
             De la stratégie à la mise en ligne, nous restons impliqués à
