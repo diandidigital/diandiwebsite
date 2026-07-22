@@ -14,13 +14,16 @@ export async function getPublishedArticles(): Promise<Article[]> {
   const db = getFirestoreDb();
   if (!db) return [];
 
+  // Tri en mémoire plutôt qu'un orderBy() Firestore : évite de dépendre
+  // d'un index composite (published + createdAt) à créer manuellement.
   const snapshot = await db
     .collection("articles")
     .where("published", "==", true)
-    .orderBy("createdAt", "desc")
     .get();
 
-  return snapshot.docs.map((doc) => doc.data() as Article);
+  return snapshot.docs
+    .map((doc) => doc.data() as Article)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
