@@ -7,13 +7,23 @@ const ALLOWED_PREFIXES = [
   "/ads.txt",
   "/robots.txt",
   "/sitemap.xml",
-  "/LOGO-DIANDIDIGITAL",
+  "/logo-diandidigital.png",
 ];
 
 export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Vérification légère (présence du cookie uniquement) pour l'UX — la
+  // vraie vérification de session a lieu côté serveur dans
+  // app/admin/(protected)/layout.tsx via firebase-admin.
+  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
+    if (!request.cookies.has("__session")) {
+      return NextResponse.redirect(new URL("/admin/login", request.url));
+    }
+  }
+
   if (process.env.MAINTENANCE_MODE !== "true") return NextResponse.next();
 
-  const { pathname } = request.nextUrl;
   if (ALLOWED_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
     return NextResponse.next();
   }

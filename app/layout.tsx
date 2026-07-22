@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description:
     "Diandi Digital développe des applications web et Android sur-mesure, ainsi que des sites et des identités de marque modernes qui font grandir votre activité.",
   icons: {
-    icon: "/LOGO-DIANDIDIGITAL 100.png",
+    icon: "/logo-diandidigital.png",
   },
   other: {
     "google-adsense-account": ADSENSE_CLIENT_ID,

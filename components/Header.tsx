@@ -26,7 +26,7 @@ export default function Header() {
       <div className="container-xl flex items-center justify-between py-4">
         <a href="#" className="flex items-center gap-2">
           <Image
-            src="/LOGO-DIANDIDIGITAL 100.png"
+            src="/logo-diandidigital.png"
             alt={site.name}
             width={40}
             height={40}

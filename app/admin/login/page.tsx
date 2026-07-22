@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth, firebaseClientConfigured } from "@/lib/firebase-client";
 
 export default function AdminLoginPage() {
@@ -23,7 +23,20 @@ export default function AdminLoginPage() {
       .value;
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const credential = await signInWithEmailAndPassword(auth, email, password);
+      const idToken = await credential.user.getIdToken();
+
+      const res = await fetch("/api/admin/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken }),
+      });
+
+      if (!res.ok) {
+        await signOut(auth);
+        throw new Error();
+      }
+
       router.push("/admin");
     } catch {
       setError("Email ou mot de passe incorrect.");

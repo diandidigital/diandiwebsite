@@ -1,12 +1,4 @@
-import {
-  collection,
-  getDocs,
-  limit,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
-import { clientDb } from "@/lib/firebase-client";
+import { getFirestoreDb } from "@/lib/firebase-admin";
 
 export type Article = {
   slug: string;
@@ -19,28 +11,28 @@ export type Article = {
 };
 
 export async function getPublishedArticles(): Promise<Article[]> {
-  if (!clientDb) return [];
+  const db = getFirestoreDb();
+  if (!db) return [];
 
-  const q = query(
-    collection(clientDb, "articles"),
-    where("published", "==", true),
-    orderBy("createdAt", "desc")
-  );
-  const snapshot = await getDocs(q);
+  const snapshot = await db
+    .collection("articles")
+    .where("published", "==", true)
+    .orderBy("createdAt", "desc")
+    .get();
 
   return snapshot.docs.map((doc) => doc.data() as Article);
 }
 
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
-  if (!clientDb) return null;
+  const db = getFirestoreDb();
+  if (!db) return null;
 
-  const q = query(
-    collection(clientDb, "articles"),
-    where("slug", "==", slug),
-    where("published", "==", true),
-    limit(1)
-  );
-  const snapshot = await getDocs(q);
+  const snapshot = await db
+    .collection("articles")
+    .where("slug", "==", slug)
+    .where("published", "==", true)
+    .limit(1)
+    .get();
 
   if (snapshot.empty) return null;
   return snapshot.docs[0].data() as Article;

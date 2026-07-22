@@ -51,13 +51,3 @@ export const stats = [
   { value: "5+", label: "Années d'expérience" },
   { value: "24/7", label: "Support réactif" },
 ];
-
-// Cloudinary public IDs — swap these once the Cloudinary account is connected.
-export const portfolioItems = [
-  { title: "Refonte e-commerce", category: "Développement", publicId: "diandi/portfolio-1" },
-  { title: "Identité de marque", category: "Branding", publicId: "diandi/portfolio-2" },
-  { title: "Application mobile", category: "Design UI/UX", publicId: "diandi/portfolio-3" },
-  { title: "Landing page SaaS", category: "Développement", publicId: "diandi/portfolio-4" },
-  { title: "Campagne social media", category: "Marketing", publicId: "diandi/portfolio-5" },
-  { title: "Dashboard analytics", category: "Design UI/UX", publicId: "diandi/portfolio-6" },
-];

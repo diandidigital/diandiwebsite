@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getPublishedArticles } from "@/lib/articles";
 import { cloudinaryUrl } from "@/lib/cloudinary";
-import { firebaseClientConfigured } from "@/lib/firebase-client";
 
 export const metadata = {
   title: "Blog — Diandi Digital",
@@ -28,11 +27,7 @@ export default async function BlogPage() {
             </h1>
           </div>
 
-          {!firebaseClientConfigured && articles.length === 0 ? (
-            <p className="text-center text-ink/50">
-              Le blog n&apos;est pas encore configuré.
-            </p>
-          ) : articles.length === 0 ? (
+          {articles.length === 0 ? (
             <p className="text-center text-ink/50">
               Aucun article publié pour le moment.
             </p>

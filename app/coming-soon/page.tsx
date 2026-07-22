@@ -11,7 +11,7 @@ export default function ComingSoonPage() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-brand-gradient-soft px-6 text-center">
       <Image
-        src="/LOGO-DIANDIDIGITAL 100.png"
+        src="/logo-diandidigital.png"
         alt="Diandi Digital"
         width={64}
         height={64}

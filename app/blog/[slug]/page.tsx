@@ -1,9 +1,42 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getArticleBySlug } from "@/lib/articles";
+import { getArticleBySlug, getPublishedArticles } from "@/lib/articles";
 import { cloudinaryUrl } from "@/lib/cloudinary";
+
+export async function generateStaticParams() {
+  const articles = await getPublishedArticles();
+  return articles.map((article) => ({ slug: article.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const article = await getArticleBySlug(params.slug);
+
+  if (!article) {
+    return { title: "Article introuvable — Diandi Digital" };
+  }
+
+  const imageUrl = article.coverImagePublicId
+    ? cloudinaryUrl(article.coverImagePublicId, { width: 1200, height: 630 })
+    : undefined;
+
+  return {
+    title: `${article.title} — Diandi Digital`,
+    description: article.excerpt,
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      type: "article",
+      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630 }] : undefined,
+    },
+  };
+}
 
 export default async function ArticlePage({
   params,

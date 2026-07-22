@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="container-xl flex flex-col sm:flex-row items-center justify-between gap-8">
         <div className="flex items-center gap-2">
           <Image
-            src="/LOGO-DIANDIDIGITAL 100.png"
+            src="/logo-diandidigital.png"
             alt={site.name}
             width={32}
             height={32}

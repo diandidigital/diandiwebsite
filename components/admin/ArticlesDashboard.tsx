@@ -1,19 +1,16 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { onAuthStateChanged, signOut, User } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import {
-  addDoc,
   collection,
-  deleteDoc,
-  doc,
   onSnapshot,
   orderBy,
   query,
-  updateDoc,
 } from "firebase/firestore";
-import { auth, clientDb, firebaseClientConfigured } from "@/lib/firebase-client";
+import { auth, clientDb } from "@/lib/firebase-client";
 import type { Article } from "@/lib/articles";
 
 const DIACRITICS_REGEX = new RegExp("[̀-ͯ]", "g");
@@ -29,30 +26,15 @@ function slugify(title: string) {
 
 type ArticleDoc = Article & { id: string };
 
-export default function AdminDashboard() {
+export default function ArticlesDashboard() {
   const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
-  const [checkingAuth, setCheckingAuth] = useState(true);
   const [articles, setArticles] = useState<ArticleDoc[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!auth) {
-      setCheckingAuth(false);
-      return;
-    }
-    const unsubscribe = onAuthStateChanged(auth, (u) => {
-      setUser(u);
-      setCheckingAuth(false);
-      if (!u) router.push("/admin/login");
-    });
-    return unsubscribe;
-  }, [router]);
-
-  useEffect(() => {
-    if (!user || !clientDb) return;
+    if (!clientDb) return;
     const q = query(collection(clientDb, "articles"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setArticles(
@@ -60,11 +42,10 @@ export default function AdminDashboard() {
       );
     });
     return unsubscribe;
-  }, [user]);
+  }, []);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!clientDb) return;
     setError("");
     setSaving(true);
 
@@ -82,26 +63,22 @@ export default function AdminDashboard() {
       .checked;
 
     try {
-      if (editingId) {
-        await updateDoc(doc(clientDb, "articles", editingId), {
+      const res = await fetch("/api/admin/articles", {
+        method: editingId ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: editingId ?? undefined,
           title,
           slug,
           excerpt,
           content,
           coverImagePublicId,
           published,
-        });
-      } else {
-        await addDoc(collection(clientDb, "articles"), {
-          title,
-          slug,
-          excerpt,
-          content,
-          coverImagePublicId,
-          published,
-          createdAt: new Date().toISOString(),
-        });
-      }
+        }),
+      });
+
+      if (!res.ok) throw new Error();
+
       form.reset();
       setEditingId(null);
     } catch {
@@ -112,9 +89,12 @@ export default function AdminDashboard() {
   }
 
   async function handleDelete(id: string) {
-    if (!clientDb) return;
     if (!confirm("Supprimer cet article ?")) return;
-    await deleteDoc(doc(clientDb, "articles", id));
+    await fetch("/api/admin/articles", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
   }
 
   function startEdit(article: ArticleDoc) {
@@ -138,23 +118,10 @@ export default function AdminDashboard() {
     });
   }
 
-  if (!firebaseClientConfigured) {
-    return (
-      <main className="min-h-screen flex items-center justify-center bg-mist px-6">
-        <p className="text-ink/60 text-center max-w-sm">
-          L&apos;authentification n&apos;est pas encore configurée. Ajoute les
-          variables Firebase dans <code>.env.local</code>.
-        </p>
-      </main>
-    );
-  }
-
-  if (checkingAuth || !user) {
-    return (
-      <main className="min-h-screen flex items-center justify-center bg-mist">
-        <p className="text-ink/40">Chargement...</p>
-      </main>
-    );
+  async function handleLogout() {
+    await fetch("/api/admin/session", { method: "DELETE" });
+    if (auth) await signOut(auth);
+    router.push("/admin/login");
   }
 
   return (
@@ -163,12 +130,20 @@ export default function AdminDashboard() {
         <div>
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-bold">Articles</h1>
-            <button
-              onClick={() => auth && signOut(auth)}
-              className="text-sm text-ink/50 hover:text-ink"
-            >
-              Se déconnecter
-            </button>
+            <div className="flex items-center gap-4">
+              <Link
+                href="/admin/portfolio"
+                className="text-sm text-ink/50 hover:text-ink"
+              >
+                Réalisations
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="text-sm text-ink/50 hover:text-ink"
+              >
+                Se déconnecter
+              </button>
+            </div>
           </div>
 
           <div className="space-y-3">
